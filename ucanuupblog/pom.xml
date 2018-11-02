@@ -35,8 +35,6 @@
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
-		<dependencies>
 	 	<!-- JPA的依赖 -->
 		<dependency>
             <groupId>org.springframework.boot</groupId>
