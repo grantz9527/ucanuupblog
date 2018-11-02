@@ -1,14 +1,16 @@
-package ucanuup.cc.config.security;
+package ucanuup.cc.config.db.jpa;
 
 import java.util.Optional;
 
-import ucanuup.cc.config.db.jpa.UserIdAdapter;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserIdAdapterImpl implements UserIdAdapter {
 
 	@Override
 	public Optional<String> getUserId() {
-		return null;
+		
+		return Optional.of("");
 	}
 
 }

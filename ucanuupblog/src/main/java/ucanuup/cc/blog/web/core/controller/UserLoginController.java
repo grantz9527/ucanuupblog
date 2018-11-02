@@ -3,10 +3,11 @@ package ucanuup.cc.blog.web.core.controller;
 import javax.annotation.Resource;
 
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +20,17 @@ import ucanuup.cc.common.utils.PasswordUtil;
 import ucanuup.cc.common.web.rt.RtMsg;
 import ucanuup.cc.common.web.rt.RtType;
 
-@RestController
+@Controller
 @Api(value = "UserLoginController", description = "用户登录以及注册接口", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserLoginController {
 	
 	@Resource
 	private UserService userService;
+	
+	@GetMapping("login")
+	public String loginPage(){
+		return "login";
+	}
 
 	@PostMapping("login")
 	@ApiOperation(value = "登录认证接口", notes = "传入用户信息及密码提交认证")
