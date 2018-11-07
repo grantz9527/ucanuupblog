@@ -10,7 +10,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -117,7 +121,41 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 
 	@Override
 	public RtPage<LeavingMsgDto> queryLeavingMsgDto(BaseQueryModel page) {
-		return null;
+		// 获取排序信息
+		PageRequest pageable = PageRequest.of(page.getPageNo(), page.getPageSize(), Direction.DESC, "createdAt");
+		Specification<BlogLeavingMsg> spec = new Specification<BlogLeavingMsg>() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Predicate toPredicate(Root<BlogLeavingMsg> root, CriteriaQuery<?> query,
+					CriteriaBuilder criteriaBuilder) {
+				List<Predicate> list = new ArrayList<Predicate>();
+				// 查询未删除的信息
+				Predicate deleted = criteriaBuilder.equal(root.get("deleted").as(Integer.class),AppConsts.DELETED_EXIST);
+				list.add(deleted);
+				Predicate[] p = new Predicate[list.size()];
+				return criteriaBuilder.and(list.toArray(p));
+			}
+		};
+		
+		Page<BlogLeavingMsg> rtPage = blogLeavingMsgDao.findAll(spec, pageable);
+		return pop(rtPage);
+	}
+	
+	private RtPage<LeavingMsgDto> pop(Page<BlogLeavingMsg> rtPage){
+		List<LeavingMsgDto> list =  new ArrayList<LeavingMsgDto>();
+		LeavingMsgDto dto = null ;
+		if(rtPage.getContent()!=null && rtPage.getContent().size()>0) {
+			for(BlogLeavingMsg msg : rtPage.getContent()) {
+				dto = new LeavingMsgDto();
+				dto.setContent(msg.getContent());
+				dto.setHeadpic("");
+				dto.setPriase(msg.getPraise());
+				dto.setSon(findLeavingMsgSonDtoByfid(msg.getId()));
+			}
+		}
+		return new RtPage<>(rtPage.getNumber(), rtPage.getSize(), list, rtPage.getTotalElements());
 	}
 
 	@Override

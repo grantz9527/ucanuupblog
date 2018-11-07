@@ -8,7 +8,7 @@ public class LeavingMsgDto {
 	
 	private String headpic;
 	
-	private String priase;
+	private Integer priase;
 	
 	List<LeavingMsgSonDto> son;
 
@@ -36,11 +36,11 @@ public class LeavingMsgDto {
 		this.son = son;
 	}
 
-	public String getPriase() {
+	public Integer getPriase() {
 		return priase;
 	}
 
-	public void setPriase(String priase) {
+	public void setPriase(Integer priase) {
 		this.priase = priase;
 	}
 }
