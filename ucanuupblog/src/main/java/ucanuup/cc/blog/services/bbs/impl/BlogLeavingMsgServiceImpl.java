@@ -11,6 +11,7 @@ import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsg;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSon;
 import ucanuup.cc.blog.services.bbs.enums.LeavingMsgType;
 import ucanuup.cc.blog.services.bbs.inter.BlogLeavingMsgService;
+import ucanuup.cc.common.exceptions.ValidateException;
 import ucanuup.cc.common.utils.StringUtil;
 
 @Service
@@ -79,6 +80,23 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 					throw new Exception("BlogLeavingMsgServiceImpl.deleteOneLeavingMsg:请传入正确的主键ID,为查询到正确的结果!");
 				}
 			}
+		}
+	}
+
+	@Override
+	public void addPraise(String id) throws ValidateException {
+		BlogLeavingMsg msg = blogLeavingMsgDao.findById(id).get();
+		if(msg == null) {
+			BlogLeavingMsgSon msgSon = blogLeavingMsgSonDao.findById(id).get();
+			if(msgSon == null) {
+				throw new ValidateException("BlogLeavingMsgServiceImpl.addPraise:请传入正确的主键ID!");
+			}else {
+				msgSon.setPraise(msgSon.getPraise()+1);
+				blogLeavingMsgSonDao.save(msgSon);
+			}
+		}else {
+			msg.setPraise(msg.getPraise()+1);
+			blogLeavingMsgDao.save(msg);
 		}
 	}
 

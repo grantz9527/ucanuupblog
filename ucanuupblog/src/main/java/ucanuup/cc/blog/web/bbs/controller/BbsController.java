@@ -90,7 +90,8 @@ public class BbsController {
 		if(user == null || StringUtil.isEmpty(user.getId()) ) {
 			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
 		}
-		return new RtMsg<String>(RtType.VALID,"评论失败!");
+		
+		return new RtMsg<String>(RtType.VALID,"赞该条评论失败!");
 	}
 	
 	@PostMapping("delLeavingMsg")
