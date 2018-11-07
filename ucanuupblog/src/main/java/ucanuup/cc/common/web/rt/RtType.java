@@ -8,6 +8,9 @@ public enum RtType {
 	VALID("-1"),
 	QQERROR("-2"),
 	PROCESS("-3"),
+	LOGIN("-4"),
+	WECHARTERROR("-5"),
+	DINGDINGERROR("-6"),
 	SYSTEM_ERROR("500");
 	
 	RtType(String value) {
