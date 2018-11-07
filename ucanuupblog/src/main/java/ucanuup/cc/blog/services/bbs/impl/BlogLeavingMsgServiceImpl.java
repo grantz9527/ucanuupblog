@@ -1,5 +1,7 @@
 package ucanuup.cc.blog.services.bbs.impl;
 
-public class BlogLeavingMsgServiceImpl {
+import ucanuup.cc.blog.services.bbs.inter.BlogLeavingMsgService;
+
+public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 
 }
