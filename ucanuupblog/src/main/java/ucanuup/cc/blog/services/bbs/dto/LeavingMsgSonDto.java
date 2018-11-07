@@ -6,6 +6,8 @@ public class LeavingMsgSonDto {
 	
 	private String headpic;
 	
+	private String userName;
+	
 	private Integer priase;
 	
 	private String call;
@@ -41,6 +43,13 @@ public class LeavingMsgSonDto {
 	public void setCall(String call) {
 		this.call = call;
 	}
-	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }
 

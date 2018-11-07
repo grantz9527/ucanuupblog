@@ -27,7 +27,7 @@ public class BlogLeavingMsg extends BaseEntity{
 	@Column(name="FATHER_ID",length=36)
 	private String fatherId;
 	
-	@Column(name="PRAISE",columnDefinition=" INTEGER comment '点赞数'")
+	@Column(name="PRAISE",columnDefinition=" INTEGER comment '点赞数' ")
 	private Integer praise;
 
 	public String getContent() {

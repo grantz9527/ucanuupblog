@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 import ucanuup.cc.config.db.jpa.BaseEntity;
 
-@Table(name="BLOG_LEAVING_MSG_SUN")
+@Table(name="BLOG_LEAVING_MSG_SON")
 @Entity
 public class BlogLeavingMsgSon  extends BaseEntity{
 
@@ -21,10 +21,10 @@ public class BlogLeavingMsgSon  extends BaseEntity{
 	private String fatherId;
 	
 	/**评论@的人*/
-	@Column(name="CALL",length=36)
-	private String call;
+	@Column(name="CALLED",length=36)
+	private String called;
 	
-	@Column(name="PRAISE",columnDefinition=" INTEGER comment '点赞数'")
+	@Column(name="PRAISE",columnDefinition=" INTEGER comment '点赞数' ")
 	private Integer praise;
 
 	public String getContent() {
@@ -39,17 +39,18 @@ public class BlogLeavingMsgSon  extends BaseEntity{
 		return fatherId;
 	}
 
+	public String getCalled() {
+		return called;
+	}
+
+	public void setCalled(String called) {
+		this.called = called;
+	}
+
 	public void setFatherId(String fatherId) {
 		this.fatherId = fatherId;
 	}
 
-	public String getCall() {
-		return call;
-	}
-
-	public void setCall(String call) {
-		this.call = call;
-	}
 
 	public Integer getPraise() {
 		return praise;

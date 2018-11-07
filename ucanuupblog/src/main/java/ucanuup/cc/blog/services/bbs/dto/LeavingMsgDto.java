@@ -8,6 +8,8 @@ public class LeavingMsgDto {
 	
 	private String headpic;
 	
+	private String userName;
+	
 	private Integer priase;
 	
 	List<LeavingMsgSonDto> son;
@@ -42,6 +44,14 @@ public class LeavingMsgDto {
 
 	public void setPriase(Integer priase) {
 		this.priase = priase;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }
 

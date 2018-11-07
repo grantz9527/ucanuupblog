@@ -71,7 +71,7 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 	@Override
 	public BlogLeavingMsgSon saveLeavingMsgSon(String content, String fatherId, String call) {
 		BlogLeavingMsgSon entity = new BlogLeavingMsgSon();
-		entity.setCall(call);
+		entity.setCalled(call);
 		entity.setContent(content);
 		entity.setFatherId(fatherId);
 		entity.setPraise(0); //默认为0个赞
@@ -150,7 +150,7 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 			for(BlogLeavingMsg msg : rtPage.getContent()) {
 				dto = new LeavingMsgDto();
 				dto.setContent(msg.getContent());
-				dto.setHeadpic("");
+				dto.setHeadpic("http://pic35.photophoto.cn/20150509/0010023742301768_b.jpg");
 				dto.setPriase(msg.getPraise());
 				dto.setSon(findLeavingMsgSonDtoByfid(msg.getId()));
 			}
@@ -190,9 +190,9 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 			for(BlogLeavingMsgSon son : rs) {
 				dto = new LeavingMsgSonDto();
 				dto.setContent(son.getContent());
-				dto.setHeadpic("");
+				dto.setHeadpic("http://pic35.photophoto.cn/20150509/0010023742301768_b.jpg");
 				dto.setPriase(son.getPraise());
-				dto.setCall(son.getCall());
+				dto.setCall(son.getCalled());
 				list.add(dto);
 			}
 		}

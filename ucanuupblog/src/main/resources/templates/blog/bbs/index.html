@@ -12,9 +12,9 @@
     <script type="text/javascript" th:src="@{/resources/jquery/jquery-3.3.1.min.js}"></script>
      <script type="text/javascript" th:src="@{/resources/wangEditor/release/wangEditor.min.js}"></script>
     <script type="text/javascript" th:src="@{/resources/bootstrap/bootstrap-4.1.3-dist/js/bootstrap.min.js}"></script>
-	
+    <script type="text/javascript" th:src="@{/resources/vue/vue.min.js}"></script>
 </head>
-<body style="background-color: #f4f8fb">
+<body style="background-color: #f4f8fb" id="bbs">
 	<div class="container-fluid" style="background-color: black">
 		<div class="container" style="background-image: url('/resources/blog/img/nav2.jpg');height: 300px;">
 		</div>
@@ -58,26 +58,28 @@
 		</div>
 		<div class="container rounded" style="background-color: #f4f8fb;padding: 40px;">
 		<div  class="container">
-			<div  class="row" style="border:1px solid #00F;padding:20px; margin-top:10px;">
+		{{hello}}
+			<div  class="row" style="border:1px solid #00F;padding:20px; margin-top:10px;"  v-for="(msg,index) in page.content">
 				<div class="col-sm-2" style="padding:20px;border:1px solid #00F;">
 					<div style="padding:20px;">
-						<div><center>Grantz</center></div>
-						<div><center><img  src="http://pic35.photophoto.cn/20150509/0010023742301768_b.jpg" width="50%" height="50px;"/></center></div>
+						<div><center>{{msg.userName}}</center></div>
+						<div><center><img  v-bind:src="msg.headpic" width="50%" height="50px;"/></center></div>
 					</div>
 				</div>
 				<div class="col-sm-10" style="padding:20px;border:1px solid #00F;">
 					<div style="padding:20px;background-color:#eee">
-						here is my world
-						<div  class="row" >
+						<p >{{msg.content}}</p>
+						<div  class="row" v-for="(son,index) in msg.son">
 							<div class="col-sm-2" >
 								<div style="padding:20px;">
-									<div><center>Grantz</center></div>
-									<div><center><img  src="http://pic35.photophoto.cn/20150509/0010023742301768_b.jpg" width="50%" height="50px;"/></center></div>
+									<div><center>{{son.userName}}</center></div>
+									<div><center><img  v-bind:src="son.headpic" width="50%" height="50px;"/></center></div>
 								</div>
 							</div>
 							<div class="col-sm-10" >
 								<div style="padding:20px;">
-									here is my world
+									<p >{{son.call}}</p>
+									<p >{{son.content}}</p>
 								</div>
 							</div>
 						</div>
@@ -207,9 +209,24 @@
 	</footer>
 </body>
 <script type="text/javascript">
+	var vm = new Vue({
+	  el: '#bbs',
+	  data: {
+		  	 hello : 'hello',
+	    	 page : {
+	    		 content:[],
+	    		 pageNo : 0 ,
+	    		 pageSize: 10 ,
+	    		 total : 10
+	    	 }
+	     }
+	})
+
 	var E = window.wangEditor
 	var editor = new E('#editor')
 	// 或者 var editor = new E( document.getElementById('editor') )
 	editor.create()
+	
+	
 </script>
 </html>
