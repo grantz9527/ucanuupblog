@@ -27,6 +27,11 @@ public class UserLoginController {
 	@Resource
 	private UserService userService;
 	
+	@GetMapping({"","/","home","index"})
+	public String home(){
+		return "index";
+	}
+	
 	@GetMapping("login")
 	public String loginPage(){
 		return "login";
