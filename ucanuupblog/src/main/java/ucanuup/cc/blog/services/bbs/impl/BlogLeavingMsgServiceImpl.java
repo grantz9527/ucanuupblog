@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ucanuup.cc.blog.services.bbs.dao.BlogLeavingMsgDao;
-import ucanuup.cc.blog.services.bbs.dao.BlogLeavingMsgSunDao;
+import ucanuup.cc.blog.services.bbs.dao.BlogLeavingMsgSonDao;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsg;
-import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSun;
+import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSon;
 import ucanuup.cc.blog.services.bbs.enums.LeavingMsgType;
 import ucanuup.cc.blog.services.bbs.inter.BlogLeavingMsgService;
 import ucanuup.cc.common.utils.StringUtil;
@@ -20,7 +20,7 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 	private BlogLeavingMsgDao blogLeavingMsgDao;
 	
 	@Autowired
-	private BlogLeavingMsgSunDao blogLeavingMsgSunDao;
+	private BlogLeavingMsgSonDao blogLeavingMsgSonDao;
 	
 	// 保存一条评价
 	@Override
@@ -30,8 +30,8 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 
 	// 保存一条子评论
 	@Override
-	public BlogLeavingMsgSun saveBlogLeavingMsgSun(BlogLeavingMsgSun entity) {
-		return blogLeavingMsgSunDao.save(entity);
+	public BlogLeavingMsgSon saveBlogLeavingMsgSon(BlogLeavingMsgSon entity) {
+		return blogLeavingMsgSonDao.save(entity);
 	}
 
 	// 创建一条新的评论
@@ -40,6 +40,7 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 		BlogLeavingMsg entity = new BlogLeavingMsg();
 		entity.setMsgType(type.getType());
 		entity.setContent(content);
+		entity.setPraise(0); //默认为0个赞
 		if(!LeavingMsgType.BBS.getType().equals(type.getType())) {
 			entity.setFatherId(fatherId);
 		}
@@ -48,12 +49,13 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 	
 	// 创建一条子评论
 	@Override
-	public BlogLeavingMsgSun saveLeavingMsgSun(String content, String fatherId, String call) {
-		BlogLeavingMsgSun entity = new BlogLeavingMsgSun();
+	public BlogLeavingMsgSon saveLeavingMsgSon(String content, String fatherId, String call) {
+		BlogLeavingMsgSon entity = new BlogLeavingMsgSon();
 		entity.setCall(call);
 		entity.setContent(content);
 		entity.setFatherId(fatherId);
-		return saveBlogLeavingMsgSun(entity);
+		entity.setPraise(0); //默认为0个赞
+		return saveBlogLeavingMsgSon(entity);
 	}
 	
 	@Override
@@ -71,8 +73,8 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 				// 删除评论信息
 			}else {
 				// 删除子评论信息
-				Optional<BlogLeavingMsgSun> sun = blogLeavingMsgSunDao.findById(id);
-				BlogLeavingMsgSun sunMsg = sun.get();
+				Optional<BlogLeavingMsgSon> sun = blogLeavingMsgSonDao.findById(id);
+				BlogLeavingMsgSon sunMsg = sun.get();
 				if(sunMsg==null) {
 					throw new Exception("BlogLeavingMsgServiceImpl.deleteOneLeavingMsg:请传入正确的主键ID,为查询到正确的结果!");
 				}

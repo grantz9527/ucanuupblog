@@ -1,27 +1,34 @@
 package ucanuup.cc.blog.web.bbs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsg;
-import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSun;
+import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSon;
 import ucanuup.cc.blog.services.bbs.enums.LeavingMsgType;
 import ucanuup.cc.blog.services.bbs.inter.BlogLeavingMsgService;
 import ucanuup.cc.blog.web.bbs.model.DelLeavingMsgModel;
 import ucanuup.cc.blog.web.bbs.model.LeavingMsgModel;
-import ucanuup.cc.blog.web.bbs.model.LeavingMsgSunModel;
+import ucanuup.cc.blog.web.bbs.model.LeavingMsgSonModel;
+import ucanuup.cc.blog.web.bbs.model.PriaseModel;
+import ucanuup.cc.common.utils.AppUtil;
+import ucanuup.cc.common.utils.StringUtil;
+import ucanuup.cc.common.utils.supportobj.UserInfo;
 import ucanuup.cc.common.web.query.BaseQueryModel;
 import ucanuup.cc.common.web.rt.RtMsg;
 import ucanuup.cc.common.web.rt.RtType;
 
 @Controller
 @RequestMapping("bbs")
+@Api(value = "BbsController", description = "留言接口模块", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BbsController {
 	
 	@Autowired
@@ -40,8 +47,12 @@ public class BbsController {
 	}
 	
 	@PostMapping("addLeavingMsg")
-	@ApiOperation(value = "添加留言", notes = "添加留言评论,第一级别的评论 ,直接评论!")
+	@ApiOperation(value = "添加评论", notes = "添加留言评论,第一级别的评论 ,直接评论!")
 	public RtMsg<String> addLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgModel model){
+		UserInfo user = AppUtil.getUser();
+		if(user == null || StringUtil.isEmpty(user.getId()) ) {
+			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
+		}
 		if(LeavingMsgType.BBS.getType().equals(model.getCommentType())) {
 			BlogLeavingMsg msg = blogLeavingMsgService.saveLeavingMsg(LeavingMsgType.BBS, model.getContent(), null);
 			if(msg == null) {
@@ -59,17 +70,32 @@ public class BbsController {
 	}
 	
 	@PostMapping("addLeavingMsgSun")
-	@ApiOperation(value = "添加留言子评论", notes = "添加留言子评论,在留言下添加评论信息!")
-	public RtMsg<String> addLeavingMsgSun(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgSunModel model){
-		BlogLeavingMsgSun sun = blogLeavingMsgService.saveLeavingMsgSun(model.getContent(), model.getFatherId(), model.getCall());
+	@ApiOperation(value = "添加子评论", notes = "添加留言子评论,在留言下添加评论信息!")
+	public RtMsg<String> addLeavingMsgSun(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgSonModel model){
+		UserInfo user = AppUtil.getUser();
+		if(user == null || StringUtil.isEmpty(user.getId()) ) {
+			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
+		}
+		BlogLeavingMsgSon sun = blogLeavingMsgService.saveLeavingMsgSon(model.getContent(), model.getFatherId(), model.getCall());
 		if(sun!=null) {
 			return new RtMsg<String>(RtType.OK,"评论成功!");
 		}
 		return new RtMsg<String>(RtType.VALID,"评论失败!");
 	}
 	
+	@PostMapping("addPraise")
+	@ApiOperation(value = "赞一下", notes = "赞该条评论!")
+	public RtMsg<String> addPraise(@RequestBody @ApiParam(name="赞一下",value="传入json格式,主键ID",required=true) PriaseModel model){
+		UserInfo user = AppUtil.getUser();
+		if(user == null || StringUtil.isEmpty(user.getId()) ) {
+			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
+		}
+		return new RtMsg<String>(RtType.VALID,"评论失败!");
+	}
+	
 	@PostMapping("delLeavingMsg")
-	@ApiOperation(value = "删除留言", notes = "删除留言信息,包含子评论")
+	//@PreAuthorize("hasAuthority('bbs:delLeavingMsg')")
+	@ApiOperation(value = "删除留言", notes = "删除留言信息,包含子评论!")
 	public RtMsg<String> delLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) DelLeavingMsgModel model) throws Exception{
 		blogLeavingMsgService.deleteOneLeavingMsg(model.getId());
 		return new RtMsg<String>(RtType.OK,"删除成功!");

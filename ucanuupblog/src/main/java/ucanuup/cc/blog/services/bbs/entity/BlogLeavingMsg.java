@@ -26,6 +26,9 @@ public class BlogLeavingMsg extends BaseEntity{
 	/**信息类型*/
 	@Column(name="FATHER_ID",length=36)
 	private String fatherId;
+	
+	@Column(name="PRAISE",columnDefinition=" INTEGER comment '点赞数'")
+	private Integer praise;
 
 	public String getContent() {
 		return content;
@@ -49,5 +52,13 @@ public class BlogLeavingMsg extends BaseEntity{
 
 	public void setFatherId(String fatherId) {
 		this.fatherId = fatherId;
+	}
+
+	public Integer getPraise() {
+		return praise;
+	}
+
+	public void setPraise(Integer praise) {
+		this.praise = praise;
 	}
 }

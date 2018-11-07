@@ -8,7 +8,7 @@ import ucanuup.cc.config.db.jpa.BaseEntity;
 
 @Table(name="BLOG_LEAVING_MSG_SUN")
 @Entity
-public class BlogLeavingMsgSun  extends BaseEntity{
+public class BlogLeavingMsgSon  extends BaseEntity{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,6 +23,9 @@ public class BlogLeavingMsgSun  extends BaseEntity{
 	/**评论@的人*/
 	@Column(name="CALL",length=36)
 	private String call;
+	
+	@Column(name="PRAISE",columnDefinition=" INTEGER comment '点赞数'")
+	private Integer praise;
 
 	public String getContent() {
 		return content;
@@ -47,4 +50,13 @@ public class BlogLeavingMsgSun  extends BaseEntity{
 	public void setCall(String call) {
 		this.call = call;
 	}
+
+	public Integer getPraise() {
+		return praise;
+	}
+
+	public void setPraise(Integer praise) {
+		this.praise = praise;
+	}
+	
 }

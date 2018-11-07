@@ -2,7 +2,7 @@ package ucanuup.cc.blog.web.bbs.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class LeavingMsgSunModel {
+public class LeavingMsgSonModel {
 	
 	@ApiModelProperty(value="内容",name="content",required=true)
 	private String content;
