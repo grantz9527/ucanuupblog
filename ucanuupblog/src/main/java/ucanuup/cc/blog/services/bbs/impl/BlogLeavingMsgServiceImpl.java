@@ -45,7 +45,17 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 		}
 		return saveBlogLeavingMsg(entity);
 	}
-
+	
+	// 创建一条子评论
+	@Override
+	public BlogLeavingMsgSun saveLeavingMsgSun(String content, String fatherId, String call) {
+		BlogLeavingMsgSun entity = new BlogLeavingMsgSun();
+		entity.setCall(call);
+		entity.setContent(content);
+		entity.setFatherId(fatherId);
+		return saveBlogLeavingMsgSun(entity);
+	}
+	
 	@Override
 	public void deleteOneLeavingMsg(String id) throws Exception {
 		if(StringUtil.isEmpty(id)) {

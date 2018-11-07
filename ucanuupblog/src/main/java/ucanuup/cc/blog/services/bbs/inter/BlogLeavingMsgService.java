@@ -15,5 +15,7 @@ public interface BlogLeavingMsgService {
 	
 	BlogLeavingMsg saveLeavingMsg(LeavingMsgType type,String content,String fatherId);
 	
+	BlogLeavingMsgSun saveLeavingMsgSun(String content,String fatherId,String call);
+	
 	void  deleteOneLeavingMsg(String id) throws Exception;
 }

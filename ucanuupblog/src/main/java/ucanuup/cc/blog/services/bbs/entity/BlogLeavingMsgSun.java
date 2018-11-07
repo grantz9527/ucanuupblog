@@ -20,10 +20,6 @@ public class BlogLeavingMsgSun  extends BaseEntity{
 	@Column(name="FATHER_ID",length=36)
 	private String fatherId;
 	
-	/**本表主键*/
-	@Column(name="MOTHER_ID",length=36)
-	private String motherId;
-	
 	/**评论@的人*/
 	@Column(name="CALL",length=36)
 	private String call;
@@ -42,14 +38,6 @@ public class BlogLeavingMsgSun  extends BaseEntity{
 
 	public void setFatherId(String fatherId) {
 		this.fatherId = fatherId;
-	}
-
-	public String getMotherId() {
-		return motherId;
-	}
-
-	public void setMotherId(String motherId) {
-		this.motherId = motherId;
 	}
 
 	public String getCall() {

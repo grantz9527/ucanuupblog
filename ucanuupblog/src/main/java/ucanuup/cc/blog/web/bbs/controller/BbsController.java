@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import ucanuup.cc.blog.web.bbs.model.LeavingMsgModel;
 import ucanuup.cc.blog.web.core.model.RegisterModel;
 import ucanuup.cc.common.web.rt.RtMsg;
 import ucanuup.cc.common.web.rt.RtType;
@@ -30,7 +31,7 @@ public class BbsController {
 	
 	@PostMapping("addLeavingMsg")
 	@ApiOperation(value = "添加留言", notes = "添加留言评论")
-	public RtMsg<String> addLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) RegisterModel model){
+	public RtMsg<String> addLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgModel model){
 		
 		return new RtMsg<String>(RtType.VALID,"sdfjslkdfj");
 	}
