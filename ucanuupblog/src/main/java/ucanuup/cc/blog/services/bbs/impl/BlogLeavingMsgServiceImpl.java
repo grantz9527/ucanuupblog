@@ -1,18 +1,33 @@
 package ucanuup.cc.blog.services.bbs.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import ucanuup.cc.blog.services.bbs.dao.BlogLeavingMsgDao;
 import ucanuup.cc.blog.services.bbs.dao.BlogLeavingMsgSonDao;
+import ucanuup.cc.blog.services.bbs.dto.LeavingMsgDto;
+import ucanuup.cc.blog.services.bbs.dto.LeavingMsgSonDto;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsg;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSon;
 import ucanuup.cc.blog.services.bbs.enums.LeavingMsgType;
 import ucanuup.cc.blog.services.bbs.inter.BlogLeavingMsgService;
+import ucanuup.cc.common.consts.AppConsts;
 import ucanuup.cc.common.exceptions.ValidateException;
 import ucanuup.cc.common.utils.StringUtil;
+import ucanuup.cc.common.web.query.BaseQueryModel;
+import ucanuup.cc.common.web.rt.RtPage;
 
 @Service
 public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
@@ -98,6 +113,52 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 			msg.setPraise(msg.getPraise()+1);
 			blogLeavingMsgDao.save(msg);
 		}
+	}
+
+	@Override
+	public RtPage<LeavingMsgDto> queryLeavingMsgDto(BaseQueryModel page) {
+		return null;
+	}
+
+	@Override
+	public List<LeavingMsgSonDto> findLeavingMsgSonDtoByfid(String fid) {
+		List<LeavingMsgSonDto> list =  new ArrayList<LeavingMsgSonDto>();
+		LeavingMsgSonDto dto = null ;
+		if(StringUtil.isNotEmpty(fid)){
+			return list;
+		}
+		
+		Specification<BlogLeavingMsgSon> spec = new Specification<BlogLeavingMsgSon>() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Predicate toPredicate(Root<BlogLeavingMsgSon> root, CriteriaQuery<?> query,
+					CriteriaBuilder criteriaBuilder) {
+				List<Predicate> list = new ArrayList<Predicate>();
+				// 查询未删除的信息
+				Predicate deleted = criteriaBuilder.equal(root.get("deleted").as(Integer.class),AppConsts.DELETED_EXIST);
+				list.add(deleted);
+				Predicate et = criteriaBuilder.equal(root.<String>get("fatherId"), fid);
+				list.add(et);
+				Predicate[] p = new Predicate[list.size()];
+				return criteriaBuilder.and(list.toArray(p));
+			}
+		};
+		@SuppressWarnings("deprecation")
+		Sort sort  = new Sort(Order.desc("createdAt"));
+		List<BlogLeavingMsgSon> rs = blogLeavingMsgSonDao.findAll(spec, sort);
+		if(rs!=null && rs.size()>0) {
+			for(BlogLeavingMsgSon son : rs) {
+				dto = new LeavingMsgSonDto();
+				dto.setContent(son.getContent());
+				dto.setHeadpic("");
+				dto.setPriase(son.getPraise());
+				dto.setCall(son.getCall());
+				list.add(dto);
+			}
+		}
+		return list;
 	}
 
 }

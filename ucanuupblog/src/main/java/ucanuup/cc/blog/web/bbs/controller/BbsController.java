@@ -41,8 +41,8 @@ public class BbsController {
 	
 	@GetMapping("list")
 	@ApiOperation(value = "查询留言板分页信息", notes = "查询留言板分页信息")
-	public RtMsg<String> list(@RequestBody @ApiParam(name="分页查询条件",value="分页查询条件") BaseQueryModel model){
-		
+	public RtMsg<String> list(@RequestBody @ApiParam(name="分页查询条件",value="分页查询条件") BaseQueryModel page){
+		blogLeavingMsgService.queryLeavingMsgDto(page);
 		return new RtMsg<String>(RtType.VALID,"sdfjslkdfj");
 	}
 	

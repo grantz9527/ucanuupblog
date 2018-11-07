@@ -1,6 +1,6 @@
 package ucanuup.cc.common.web.rt;
 
-public class RtPage implements RtBasePage{
+public class RtPage<T> implements RtBasePage{
 
 	
 }
