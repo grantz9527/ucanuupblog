@@ -2,16 +2,16 @@ package ucanuup.cc.blog.web.bbs.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class LeavingMsgModel {
+public class LeavingMsgSunModel {
 	
 	@ApiModelProperty(value="内容",name="content",required=true)
 	private String content;
 	
-	@ApiModelProperty(value="父id",name="fatherId")
+	@ApiModelProperty(value="父id",name="fatherId",required=true)
 	private String fatherId;
 	
-	@ApiModelProperty(value="评论类型",name="commentType",required=true)
-	private String commentType;
+	@ApiModelProperty(value="@的用户,回复的用户",name="call",required=true)
+	private String call;
 
 	public String getContent() {
 		return content;
@@ -29,11 +29,11 @@ public class LeavingMsgModel {
 		this.fatherId = fatherId;
 	}
 
-	public String getCommentType() {
-		return commentType;
+	public String getCall() {
+		return call;
 	}
 
-	public void setCommentType(String commentType) {
-		this.commentType = commentType;
+	public void setCall(String call) {
+		this.call = call;
 	}
 }
