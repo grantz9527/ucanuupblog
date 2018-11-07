@@ -78,7 +78,6 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 				}
 			}
 		}
-		
 	}
 
 }
