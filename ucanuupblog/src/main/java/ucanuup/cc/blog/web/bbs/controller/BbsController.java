@@ -1,5 +1,6 @@
 package ucanuup.cc.blog.web.bbs.controller;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -7,10 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import ucanuup.cc.blog.services.bbs.dto.LeavingMsgDto;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsg;
 import ucanuup.cc.blog.services.bbs.entity.BlogLeavingMsgSon;
 import ucanuup.cc.blog.services.bbs.enums.LeavingMsgType;
@@ -24,6 +30,7 @@ import ucanuup.cc.common.utils.StringUtil;
 import ucanuup.cc.common.utils.supportobj.UserInfo;
 import ucanuup.cc.common.web.query.BaseQueryModel;
 import ucanuup.cc.common.web.rt.RtMsg;
+import ucanuup.cc.common.web.rt.RtPage;
 import ucanuup.cc.common.web.rt.RtType;
 
 @Controller
@@ -41,20 +48,31 @@ public class BbsController {
 	
 	@GetMapping("list")
 	@ApiOperation(value = "查询留言板分页信息", notes = "查询留言板分页信息")
-	public RtMsg<String> list(@RequestBody @ApiParam(name="分页查询条件",value="分页查询条件") BaseQueryModel page){
-		blogLeavingMsgService.queryLeavingMsgDto(page);
-		return new RtMsg<String>(RtType.VALID,"sdfjslkdfj");
+	@ResponseBody
+	public Object list(@ApiParam(name="分页查询条件",value="分页查询条件") BaseQueryModel page){
+		RtPage<LeavingMsgDto> rs = blogLeavingMsgService.queryLeavingMsgDto(page);
+		return rs;
 	}
 	
-	@PostMapping("addLeavingMsg")
+	@GetMapping("addLeavingMsg")
 	@ApiOperation(value = "添加评论", notes = "添加留言评论,第一级别的评论 ,直接评论!")
-	public RtMsg<String> addLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgModel model){
-		UserInfo user = AppUtil.getUser();
+	@ResponseBody
+	public Object addLeavingMsg(@ApiParam(name="请求修改密码对象",value="传入json格式") LeavingMsgModel model){
+		/*UserInfo user = AppUtil.getUser();
 		if(user == null || StringUtil.isEmpty(user.getId()) ) {
-			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
-		}
+			 ObjectMapper mapper = new ObjectMapper();
+			 RtMsg fruit= new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
+		        String mapJakcson = null;
+				try {
+					mapJakcson = mapper.writeValueAsString(fruit);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+		        System.out.println(mapJakcson);
+			return new RtMsg<Object>(RtType.LOGIN,"还没有登录哟,无法评论!");
+		}*/
 		if(LeavingMsgType.BBS.getType().equals(model.getCommentType())) {
-			BlogLeavingMsg msg = blogLeavingMsgService.saveLeavingMsg(LeavingMsgType.BBS, model.getContent(), null);
+			BlogLeavingMsg msg = blogLeavingMsgService.saveLeavingMsg(LeavingMsgType.BBS, model.getContent() , null);
 			if(msg == null) {
 				return new RtMsg<String>(RtType.VALID,"评论失败!");
 			}
@@ -71,7 +89,8 @@ public class BbsController {
 	
 	@PostMapping("addLeavingMsgSun")
 	@ApiOperation(value = "添加子评论", notes = "添加留言子评论,在留言下添加评论信息!")
-	public RtMsg<String> addLeavingMsgSun(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgSonModel model){
+	@ResponseBody
+	public Object addLeavingMsgSun(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) LeavingMsgSonModel model){
 		UserInfo user = AppUtil.getUser();
 		if(user == null || StringUtil.isEmpty(user.getId()) ) {
 			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
@@ -85,7 +104,8 @@ public class BbsController {
 	
 	@PostMapping("addPraise")
 	@ApiOperation(value = "赞一下", notes = "赞该条评论!")
-	public RtMsg<String> addPraise(@RequestBody @ApiParam(name="赞一下",value="传入json格式,主键ID",required=true) PriaseModel model){
+	@ResponseBody
+	public Object addPraise(@RequestBody @ApiParam(name="赞一下",value="传入json格式,主键ID",required=true) PriaseModel model){
 		UserInfo user = AppUtil.getUser();
 		if(user == null || StringUtil.isEmpty(user.getId()) ) {
 			return new RtMsg<String>(RtType.LOGIN,"还没有登录哟,无法评论!");
@@ -97,7 +117,8 @@ public class BbsController {
 	@PostMapping("delLeavingMsg")
 	//@PreAuthorize("hasAuthority('bbs:delLeavingMsg')")
 	@ApiOperation(value = "删除留言", notes = "删除留言信息,包含子评论!")
-	public RtMsg<String> delLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) DelLeavingMsgModel model) throws Exception{
+	@ResponseBody
+	public Object delLeavingMsg(@RequestBody @ApiParam(name="请求修改密码对象",value="传入json格式",required=true) DelLeavingMsgModel model) throws Exception{
 		blogLeavingMsgService.deleteOneLeavingMsg(model.getId());
 		return new RtMsg<String>(RtType.OK,"删除成功!");
 	}

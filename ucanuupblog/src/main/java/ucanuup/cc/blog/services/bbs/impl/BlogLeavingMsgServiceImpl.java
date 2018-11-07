@@ -153,9 +153,10 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 				dto.setHeadpic("http://pic35.photophoto.cn/20150509/0010023742301768_b.jpg");
 				dto.setPriase(msg.getPraise());
 				dto.setSon(findLeavingMsgSonDtoByfid(msg.getId()));
+				list.add(dto);
 			}
 		}
-		return new RtPage<>(rtPage.getNumber(), rtPage.getSize(), list, rtPage.getTotalElements());
+		return new RtPage<>(rtPage.getPageable().getPageNumber(), rtPage.getPageable().getPageSize(), list, rtPage.getTotalElements());
 	}
 
 	@Override

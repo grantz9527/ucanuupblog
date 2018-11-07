@@ -22,7 +22,7 @@ public final class RtMsg<T> implements RtBaseInter{
 	/**
 	 * 系统状态， 真为成功  false为失败
 	 */
-	private boolean status;
+	private Boolean status;
 	/**
 	 * 系统状态， 异常编码
 	 */
@@ -33,7 +33,7 @@ public final class RtMsg<T> implements RtBaseInter{
 	private T  msg;
 
 	@Override
-	public boolean getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
@@ -42,7 +42,7 @@ public final class RtMsg<T> implements RtBaseInter{
 		return code;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 

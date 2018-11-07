@@ -12,10 +12,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
@@ -45,7 +45,7 @@ public class BaseEntity  implements Serializable{
 	@CreatedBy
 	protected String createdBy;
 	@Column(name="UPDATED_AT")
-	@UpdateTimestamp
+	@LastModifiedDate
 	protected Date updatedAt;
 	@Column(name="UPDATED_BY",length=36)
 	@LastModifiedBy

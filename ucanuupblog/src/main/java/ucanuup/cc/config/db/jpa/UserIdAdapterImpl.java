@@ -10,7 +10,7 @@ public class UserIdAdapterImpl implements UserIdAdapter {
 	@Override
 	public Optional<String> getUserId() {
 		
-		return Optional.of("");
+		return Optional.of("hello");
 	}
 
 }

@@ -9,7 +9,7 @@ public interface RtBaseInter {
 	/**
 	 * 获取状态数据
 	 */
-	boolean getStatus();
+	Boolean getStatus();
 	/**
 	 * @Title:  RtBaseInter.java   
 	 * @Package ucanuup.cc.common.web.returninfo   
