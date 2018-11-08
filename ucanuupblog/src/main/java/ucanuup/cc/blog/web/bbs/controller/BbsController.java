@@ -1,6 +1,5 @@
 package ucanuup.cc.blog.web.bbs.controller;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -9,9 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +23,7 @@ import ucanuup.cc.blog.web.bbs.model.LeavingMsgSonModel;
 import ucanuup.cc.blog.web.bbs.model.PriaseModel;
 import ucanuup.cc.common.utils.AppUtil;
 import ucanuup.cc.common.utils.StringUtil;
+import ucanuup.cc.common.utils.XssUtil;
 import ucanuup.cc.common.utils.supportobj.UserInfo;
 import ucanuup.cc.common.web.query.BaseQueryModel;
 import ucanuup.cc.common.web.rt.RtMsg;
@@ -71,8 +68,9 @@ public class BbsController {
 		        System.out.println(mapJakcson);
 			return new RtMsg<Object>(RtType.LOGIN,"还没有登录哟,无法评论!");
 		}*/
+		String content = XssUtil.cleanXSS(model.getContent() );
 		if(LeavingMsgType.BBS.getType().equals(model.getCommentType())) {
-			BlogLeavingMsg msg = blogLeavingMsgService.saveLeavingMsg(LeavingMsgType.BBS, model.getContent() , null);
+			BlogLeavingMsg msg = blogLeavingMsgService.saveLeavingMsg(LeavingMsgType.BBS,content , null);
 			if(msg == null) {
 				return new RtMsg<String>(RtType.VALID,"评论失败!");
 			}

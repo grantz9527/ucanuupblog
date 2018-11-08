@@ -152,6 +152,7 @@ public class BlogLeavingMsgServiceImpl implements BlogLeavingMsgService{
 				dto.setContent(msg.getContent());
 				dto.setHeadpic("http://pic35.photophoto.cn/20150509/0010023742301768_b.jpg");
 				dto.setPriase(msg.getPraise());
+				dto.setUserName("我叫测试");
 				dto.setSon(findLeavingMsgSonDtoByfid(msg.getId()));
 				list.add(dto);
 			}
