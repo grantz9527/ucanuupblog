@@ -59,16 +59,22 @@
 		<div class="container rounded" style="background-color: #f4f8fb;padding: 40px;">
 		<div  class="container">
 		
-			<div  class="row" style="border:1px solid #00F;padding:20px; margin-top:10px;"  v-for="(msg,index) in page.content">
-				<div class="col-sm-2" style="padding:20px;border:1px solid #00F;">
-					<div style="padding:20px;">
-						<div><center>{{msg.userName}}</center></div>
-						<div><center><img  v-bind:src="msg.headpic" width="50%" height="50px;"/></center></div>
+			<div  class="row  rounded" style="border:1px solid #eee;background-color: #eee;padding:20px; margin-top:10px;"  v-for="(msg,index) in page.content">
+				<div class="col-sm-2 rounded" style="padding:20px;background-color: white">
+					<div  style="padding:20px;">
+						<div><center><img  v-bind:src="msg.headpic" width="50px;" height="50px;"/></center></div>
+						<div style="word-wrap:break-word;font-size:14px"><center>{{msg.userName}}</center></div>
+						<div style="word-wrap:break-word;color: #adadad;font-size:12px"><center>2018-10-17</center></div>
 					</div>
 				</div>
-				<div class="col-sm-10" style="padding:20px;border:1px solid #00F;">
-					<div style="padding:20px;background-color:#eee">
-						<p style="word-wrap:break-word" v-html="msg.content"></p>
+				<div class="col-sm-10" >
+					<div class="rounded" style="padding:20px;background-color:white">
+						<p style="word-wrap:break-word"  v-html="msg.content"></p>
+						<p style="word-wrap:break-word;color: #adadad;font-size:12px"  > 
+						<a v-on:click="addPriase" style="cursor:pointer;">赞    <i class="fa fa-thumbs-o-up">({{msg.priase}})</i> </a>
+						<a v-on:click="addPriase" style="cursor:pointer;">评论<i class="fa fa-comment-o">({{msg.priase}})</i> </a>
+						
+						</p>
 						<div  class="row" v-for="(son,index) in msg.son">
 							<div class="col-sm-2" >
 								<div style="padding:20px;">
@@ -168,6 +174,12 @@
 	 		        	}
 	 		        }
 	 		    });
+		    },
+		    addPriase : function(id){
+		    	alert(id);
+		    },
+		    addComment : function(id){
+		    	alert(id);
 		    }
 	  }
 	})
